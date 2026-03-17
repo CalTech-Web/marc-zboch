@@ -12,6 +12,7 @@ import {
   Sparkles,
   ArrowDown,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import RecipientCard from "@/components/RecipientCard";
@@ -77,7 +78,15 @@ export default function HomePage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0f2744] via-primary to-primary-light min-h-[90vh] flex items-center">
+      <section className="relative overflow-hidden min-h-[90vh] flex items-center">
+        <Image
+          src="/images/hero-graduation.jpg"
+          alt="Graduates throwing caps in the air"
+          fill
+          priority
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0f2744]/90 via-primary/80 to-primary-light/75" />
         <div className="absolute inset-0 dot-grid" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-accent/10 rounded-full blur-[100px]" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-light/20 rounded-full blur-[120px]" />

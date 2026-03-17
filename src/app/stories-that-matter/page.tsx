@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Heart, ChevronRight, Sparkles } from "lucide-react";
+import Image from "next/image";
 import SectionHeading from "@/components/SectionHeading";
 import StoryModal from "@/components/StoryModal";
 
@@ -138,7 +139,15 @@ export default function StoriesThatMatterPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0f2744] via-primary to-primary-light py-24 sm:py-32">
+      <section className="relative overflow-hidden py-24 sm:py-32">
+        <Image
+          src="/images/stories-hero.jpg"
+          alt="Graduates holding diplomas"
+          fill
+          priority
+          className="object-cover object-top"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0f2744]/90 via-primary/80 to-primary-light/75" />
         <div className="absolute inset-0 dot-grid" />
         <div className="absolute top-10 right-10 w-64 h-64 bg-accent/10 rounded-full blur-[80px]" />
         <div className="absolute bottom-10 left-10 w-48 h-48 bg-primary-light/20 rounded-full blur-[60px]" />
