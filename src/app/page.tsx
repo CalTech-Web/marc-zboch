@@ -11,6 +11,9 @@ import {
   FileText,
   Sparkles,
   ArrowDown,
+  Heart,
+  Users,
+  Award,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -155,25 +158,72 @@ export default function HomePage() {
       </section>
 
       {/* ── About ── */}
-      <section id="about" className="py-24 bg-white scroll-mt-20">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <section id="about" className="py-24 bg-section-bg scroll-mt-20 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             title="About The Scholarship"
             subtitle="Supporting students who make a difference."
           />
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-muted text-lg leading-relaxed text-center max-w-3xl mx-auto"
+            transition={{ duration: 0.6 }}
+            className="relative bg-white rounded-3xl border border-gray-100 shadow-xl p-8 sm:p-12 overflow-hidden"
           >
-            <p>
+            <div className="absolute top-6 right-6 w-32 h-32 bg-accent/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-6 left-6 w-40 h-40 bg-primary/5 rounded-full blur-3xl" />
+            <p className="relative text-muted text-lg leading-relaxed text-center max-w-3xl mx-auto mb-10">
               The Marc Zboch Academic Scholarship recognizes and rewards students who demonstrate a
               genuine commitment to making a positive impact in their communities. Through personal
               sacrifice and service to others, these students embody the values that this scholarship
               was created to celebrate.
             </p>
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: Heart,
+                  title: "Recognizing Sacrifice",
+                  text: "Rewards students who make personal sacrifices to help others in meaningful ways.",
+                  gradient: "from-rose-50 to-pink-50",
+                  iconColor: "text-rose-500",
+                },
+                {
+                  icon: Users,
+                  title: "Open to All",
+                  text: "Any U.S. college or university student can apply, with no GPA or demographic requirements.",
+                  gradient: "from-blue-50 to-indigo-50",
+                  iconColor: "text-blue-500",
+                },
+                {
+                  icon: Award,
+                  title: "Making an Impact",
+                  text: "Celebrating those who embody service and compassion in their communities.",
+                  gradient: "from-amber-50 to-yellow-50",
+                  iconColor: "text-amber-500",
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
+                  className="text-center"
+                >
+                  <motion.div
+                    className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mx-auto mb-4`}
+                    whileHover={{ rotate: 5, scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <item.icon className={`h-7 w-7 ${item.iconColor} icon-float`} />
+                  </motion.div>
+                  <h3 className="text-base font-bold text-foreground mb-1.5">{item.title}</h3>
+                  <p className="text-sm text-muted leading-relaxed">{item.text}</p>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
