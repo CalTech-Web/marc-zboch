@@ -1,0 +1,109 @@
+"use client";
+
+import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Award, GraduationCap } from "lucide-react";
+
+interface WinnerModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  winner: {
+    year: string;
+    name: string;
+    summary: string;
+    fullStory: string[];
+  } | null;
+}
+
+export default function WinnerModal({ isOpen, onClose, winner }: WinnerModalProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    function handleEsc(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
+
+  return (
+    <AnimatePresence>
+      {isOpen && winner && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 modal-backdrop"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.3, type: "spring", damping: 25, stiffness: 300 }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+          >
+            {/* Header */}
+            <div className="bg-gradient-to-r from-primary via-primary-light to-[#1a4a7a] px-6 sm:px-8 py-6 shrink-0">
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:rotate-90"
+                aria-label="Close modal"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Award className="h-5 w-5 text-accent" />
+                </div>
+                <span className="text-accent font-semibold text-sm tracking-wide uppercase">
+                  {winner.year} Scholarship Recipient
+                </span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">{winner.name}</h2>
+            </div>
+
+            {/* Body */}
+            <div className="px-6 sm:px-8 py-6 overflow-y-auto modal-scroll flex-1">
+              <div className="space-y-4">
+                {winner.fullStory.map((paragraph, i) => (
+                  <p key={i} className="text-muted text-sm sm:text-base leading-relaxed">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 sm:px-8 py-4 border-t border-gray-100 bg-gray-50/50 shrink-0">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs text-muted">
+                  <GraduationCap className="h-4 w-4" />
+                  Marc Zboch Academic Scholarship
+                </div>
+                <a
+                  href="#apply"
+                  onClick={onClose}
+                  className="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-primary text-sm font-semibold px-5 py-2 rounded-full transition-all hover:-translate-y-0.5 shadow-md"
+                >
+                  Apply Now
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
