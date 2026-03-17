@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Heart, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { BookOpen, Heart, ChevronRight, Sparkles } from "lucide-react";
 import SectionHeading from "@/components/SectionHeading";
+import StoryModal from "@/components/StoryModal";
 
 const stories = [
   {
@@ -131,82 +132,9 @@ const pastelColors = [
   "from-lime-50 to-green-50 border-lime-200/50",
 ];
 
-function StoryCard({ story, index }: { story: (typeof stories)[0]; index: number }) {
-  const [expanded, setExpanded] = useState(false);
-  const previewParagraphs = story.paragraphs.slice(0, 2);
-  const remainingParagraphs = story.paragraphs.slice(2);
-
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
-      className={`bg-gradient-to-br ${pastelColors[index]} border rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden card-glow`}
-    >
-      <div className="p-6 sm:p-8">
-        <div className="flex items-start gap-4 mb-5">
-          <motion.div
-            className="flex-shrink-0 w-11 h-11 rounded-full bg-white/80 flex items-center justify-center shadow-sm"
-            whileHover={{ rotate: 10, scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <Heart className="h-5 w-5 text-primary" />
-          </motion.div>
-          <div>
-            <span className="text-sm font-semibold text-primary">{story.name}</span>
-            <h3 className="text-lg font-bold text-foreground leading-snug">
-              &ldquo;{story.title}&rdquo;
-            </h3>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          {previewParagraphs.map((p, i) => (
-            <p key={i} className="text-sm text-muted leading-relaxed">{p}</p>
-          ))}
-        </div>
-
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <div className="space-y-3 mt-3">
-                {remainingParagraphs.map((p, i) => (
-                  <p key={i} className="text-sm text-muted leading-relaxed">{p}</p>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {remainingParagraphs.length > 0 && (
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-primary hover:text-primary-light transition-colors"
-          >
-            {expanded ? (
-              <>
-                Read less <ChevronUp className="h-4 w-4" />
-              </>
-            ) : (
-              <>
-                Read full story <ChevronDown className="h-4 w-4" />
-              </>
-            )}
-          </button>
-        )}
-      </div>
-    </motion.article>
-  );
-}
-
 export default function StoriesThatMatterPage() {
+  const [selectedStory, setSelectedStory] = useState<(typeof stories)[0] | null>(null);
+
   return (
     <>
       {/* ── Hero ── */}
@@ -239,11 +167,47 @@ export default function StoriesThatMatterPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             title="Featured Stories From Past Finalists"
-            subtitle="Each story represents a unique act of selflessness and dedication to community service."
+            subtitle="Click on a story to read the full essay."
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {stories.map((story, index) => (
-              <StoryCard key={story.name} story={story} index={index} />
+              <motion.article
+                key={story.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                whileHover={{ y: -6 }}
+                onClick={() => setSelectedStory(story)}
+                className={`group bg-gradient-to-br ${pastelColors[index]} border rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer card-glow`}
+              >
+                <div className="p-6 sm:p-8">
+                  <div className="flex items-start gap-4 mb-4">
+                    <motion.div
+                      className="flex-shrink-0 w-11 h-11 rounded-full bg-white/80 flex items-center justify-center shadow-sm"
+                      whileHover={{ rotate: 10, scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <Heart className="h-5 w-5 text-primary" />
+                    </motion.div>
+                    <div className="flex-1">
+                      <span className="text-sm font-semibold text-primary">{story.name}</span>
+                      <h3 className="text-lg font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
+                        &ldquo;{story.title}&rdquo;
+                      </h3>
+                    </div>
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ChevronRight className="h-4 w-4 text-primary" />
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted leading-relaxed line-clamp-3">
+                    {story.paragraphs[0]}
+                  </p>
+                  <span className="inline-flex items-center gap-1 mt-4 text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                    Read full story <ChevronRight className="h-3 w-3" />
+                  </span>
+                </div>
+              </motion.article>
             ))}
           </div>
 
@@ -265,6 +229,13 @@ export default function StoriesThatMatterPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* ── Story Modal ── */}
+      <StoryModal
+        isOpen={selectedStory !== null}
+        onClose={() => setSelectedStory(null)}
+        story={selectedStory}
+      />
     </>
   );
 }
