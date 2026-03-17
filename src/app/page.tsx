@@ -87,13 +87,14 @@ export default function HomePage() {
           alt="Graduates throwing caps in the air"
           fill
           priority
+          sizes="100vw"
           className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-[#0f2744]/90 via-primary/80 to-primary-light/75" />
         <div className="absolute inset-0 dot-grid" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-accent/10 rounded-full blur-[100px]" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-light/20 rounded-full blur-[120px]" />
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-24 sm:py-32 text-center w-full">
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-[calc(theme(spacing.24)+50px)] sm:pt-[calc(theme(spacing.32)+50px)] pb-24 sm:pb-32 text-center w-full">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -248,7 +249,7 @@ export default function HomePage() {
                 <DollarSign className="h-8 w-8 text-green-600 icon-float" />
               </motion.div>
               <h3 className="text-lg font-bold text-foreground mb-2">Scholarship Award</h3>
-              <p className="text-5xl font-bold text-primary">$1,000</p>
+              <p className="text-4xl sm:text-5xl font-bold text-primary">$1,000</p>
               <p className="text-sm text-muted mt-2">One-time award for 2026</p>
             </motion.div>
 
@@ -305,7 +306,7 @@ export default function HomePage() {
                 <Calendar className="h-8 w-8 text-amber-600 icon-float" />
               </motion.div>
               <h3 className="text-lg font-bold text-foreground mb-2">Application Deadline</h3>
-              <p className="text-3xl font-bold text-primary">February 1, 2027</p>
+              <p className="text-2xl sm:text-3xl font-bold text-primary">February 1, 2027</p>
               <p className="text-sm text-muted mt-2">Applications close at 11:59 PM EST</p>
             </motion.div>
           </div>

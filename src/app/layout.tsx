@@ -59,6 +59,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  other: {
+    "theme-color": "#1e3a5f",
+  },
   alternates: {
     canonical: "https://marczbochscholarship.com",
   },
@@ -71,6 +74,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Marc Zboch Academic Scholarship",
+              url: "https://marczbochscholarship.com",
+              description:
+                "A $1,000 scholarship awarded to a U.S. college or university student who demonstrates a commitment to helping others through personal sacrifice.",
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

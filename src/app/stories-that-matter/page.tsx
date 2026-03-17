@@ -145,6 +145,7 @@ export default function StoriesThatMatterPage() {
           alt="Graduates holding diplomas"
           fill
           priority
+          sizes="100vw"
           className="object-cover object-top"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-[#0f2744]/90 via-primary/80 to-primary-light/75" />
