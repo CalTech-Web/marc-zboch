@@ -167,7 +167,7 @@ export default function HomePage() {
             <blockquote className="text-xl sm:text-2xl font-semibold text-foreground italic leading-relaxed">
               &ldquo;Describe a time when you made sacrifices to help others.&rdquo;
             </blockquote>
-            <p className="mt-4 text-muted">400-word response required</p>
+            <p className="mt-4 text-muted">400 to 500 word response required</p>
           </motion.div>
         </div>
       </section>
