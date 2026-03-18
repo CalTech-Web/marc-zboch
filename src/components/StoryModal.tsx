@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart, GraduationCap } from "lucide-react";
 
@@ -15,11 +15,17 @@ interface StoryModalProps {
 }
 
 export default function StoryModal({ isOpen, onClose, story }: StoryModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocus = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     if (isOpen) {
+      previousFocus.current = document.activeElement as HTMLElement;
       document.body.style.overflow = "hidden";
+      setTimeout(() => modalRef.current?.focus(), 0);
     } else {
       document.body.style.overflow = "";
+      previousFocus.current?.focus();
     }
     return () => {
       document.body.style.overflow = "";
@@ -34,6 +40,23 @@ export default function StoryModal({ isOpen, onClose, story }: StoryModalProps) 
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key !== "Tab" || !modalRef.current) return;
+    const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }, []);
+
   return (
     <AnimatePresence>
       {isOpen && story && (
@@ -46,12 +69,18 @@ export default function StoryModal({ isOpen, onClose, story }: StoryModalProps) 
           onClick={onClose}
         >
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Story by ${story.name} — ${story.title}`}
+            tabIndex={-1}
+            onKeyDown={handleKeyDown}
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.3, type: "spring", damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden outline-none"
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-primary via-primary-light to-[#1a4a7a] px-6 sm:px-8 py-6 shrink-0">
