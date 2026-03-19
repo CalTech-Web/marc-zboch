@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://marczbochscholarship.com"),
+  verification: { google: "vF24QsTR-qaZLkJe4yaJTxYjCW35brS5hz16Hn-wjq0" },
   title: {
     default: "Marc Zboch Academic Scholarship | $1,000 College Scholarship",
     template: "%s | Marc Zboch Academic Scholarship",
