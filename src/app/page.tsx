@@ -84,7 +84,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden min-h-[90vh] flex items-center">
         <Image
           src="/images/hero-graduation.jpg"
-          alt="Graduates throwing caps in the air"
+          alt="College graduates celebrating by throwing caps in the air at commencement ceremony for the Marc Zboch Academic Scholarship"
           fill
           priority
           sizes="100vw"
